@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Keep the SHA-pinned GitHub Actions current (Dependabot updates the pins).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+  # All dev dependencies, bundled into a single weekly PR to avoid noise.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dev-dependencies:
+        patterns: ["*"]

@@ -1,0 +1,70 @@
+name: Release
+
+# Publishes to npm and cuts a GitHub release whenever package.json on main has a
+# version npm has not seen yet (i.e. you bumped it). Uses npm Trusted Publishing
+# (OIDC): there is no long-lived NPM_TOKEN, and provenance is attached
+# automatically. You must first configure the trusted publisher on npmjs.org
+# (user: shulaoda, repository: pathslash, workflow: release.yml).
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Never let two releases run at once.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: release
+    if: github.repository_owner == 'shulaoda'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the git tag and the GitHub release
+      id-token: write # OIDC token for npm trusted publishing (and provenance)
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: 24
+      - run: npm install -g npm@latest # trusted publishing needs npm >= 11.5.1
+      - run: pnpm install --frozen-lockfile
+
+      - name: Detect whether this version is new
+        id: check
+        run: |
+          name=$(node -p "require('./package.json').name")
+          version=$(node -p "require('./package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "$name@$version is already on npm, nothing to publish."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "$name@$version is new, will publish."
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validate before publishing
+        if: steps.check.outputs.publish == 'true'
+        run: |
+          pnpm typecheck
+          pnpm test
+          pnpm build
+
+      - name: Publish to npm (trusted publishing / OIDC, provenance is automatic)
+        if: steps.check.outputs.publish == 'true'
+        run: npm publish
+
+      - name: Create GitHub release
+        if: steps.check.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.check.outputs.version }}
+        run: gh release create "v$VERSION" --title "v$VERSION" --generate-notes
