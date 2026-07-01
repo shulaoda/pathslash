@@ -55,7 +55,7 @@ toSlash("C:\\a\\b"); // 'C:/a/b' on Windows, unchanged on POSIX
 - `win32.sep` is `"/"` instead of `"\\"`, and `win32.delimiter` stays `";"`.
 - `\\?\` (extended-length) paths stay verbatim. `toSlash` and every `win32.*` function leave them untouched, because a forward slash is a literal character there, not a separator.
 - `toNamespacedPath` always returns a native, backslash path, since `\\?\` paths are only valid with backslashes.
-- `matchesGlob` mirrors `node:path`. It exists only on Node versions that ship it (20.17+ / 22.5+) and is `undefined` on older ones.
+- `matchesGlob` mirrors `node:path`. It exists only on Node versions that ship it (22.5+) and is `undefined` on older ones.
 - The types are a drop-in too: `import type { ParsedPath, FormatInputPathObject, PlatformPath } from "pathslash"`.
 - Everything else matches `node:path`, separators aside.
 

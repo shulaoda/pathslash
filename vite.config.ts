@@ -10,7 +10,7 @@ export default defineConfig({
     dts: true,
     clean: true,
     platform: "node",
-    target: "node20",
+    target: "node22",
     // We intentionally ship both a default export (the platform path object) and
     // named exports (for tree-shaking), like node:path. Pick 'named' so the CJS
     // output is deterministic instead of rollup's "auto" guess.
