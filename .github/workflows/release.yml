@@ -30,12 +30,14 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
-      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+      # Installs vp (version resolved from the lockfile), Node, and the deps.
+      - uses: voidzero-dev/setup-vp@35171c92dd08b67d5a9d3f2a4327800e58396f2a # v1.13.0
         with:
           node-version: 24
+          cache: true
+          run-install: |
+            - args: ['--frozen-lockfile']
       - run: npm install -g npm@11 # trusted publishing needs npm >= 11.5.1; pinned to the major
-      - run: pnpm install --frozen-lockfile
 
       - name: Detect whether this version is new
         id: check
@@ -54,10 +56,11 @@ jobs:
       - name: Validate before publishing
         if: steps.check.outputs.publish == 'true'
         run: |
-          pnpm typecheck
-          pnpm test
-          pnpm build
-          pnpm lint:package
+          vp run typecheck
+          vp check
+          vp test run
+          vp pack
+          vp run lint:package
 
       - name: Publish to npm (trusted publishing / OIDC, provenance is automatic)
         if: steps.check.outputs.publish == 'true'
