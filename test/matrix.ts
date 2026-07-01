@@ -186,6 +186,7 @@ export const JOIN_ARGS: ReadonlyArray<readonly string[]> = [
 
 // Many-arg `resolve`: drive accumulation, root resets, drive-relative segments.
 export const RESOLVE_ARGS: ReadonlyArray<readonly string[]> = [
+  [], // zero args resolves to the real cwd (flipped on a Windows host)
   ["C:\\a", "b", "c"],
   ["C:\\a", "D:\\b", "c"],
   ["\\\\server\\share", "a", "..", "b"],
