@@ -1,6 +1,6 @@
 {
   "name": "pathslash",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "node:path, platform-correct, with forward-slash output.",
   "keywords": [
     "cross-platform",
