@@ -38,7 +38,6 @@ jobs:
           run-install: |
             - args: ['--frozen-lockfile']
       - run: npm install -g npm@11 # trusted publishing needs npm >= 11.5.1; pinned to the major
-
       - name: Detect whether this version is new
         id: check
         run: |
