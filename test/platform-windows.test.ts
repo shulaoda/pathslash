@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 // Re-import the module under a stubbed Windows platform so the Windows-host code
 // paths (toSlash flipping, the `isWindows ? win32 : posix` default) get exercised.

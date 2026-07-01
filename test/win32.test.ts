@@ -1,5 +1,5 @@
 import nodePath from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { win32 } from "../src/index";
 import {
   BASENAME_SUFFIX,

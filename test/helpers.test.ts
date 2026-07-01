@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import { toSlash } from "../src/index";
 
 const onWindows = process.platform === "win32";

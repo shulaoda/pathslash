@@ -11,13 +11,13 @@
     "win32",
     "windows"
   ],
+  "homepage": "https://github.com/shulaoda/pathslash#readme",
+  "bugs": "https://github.com/shulaoda/pathslash/issues",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shulaoda/pathslash.git"
   },
-  "homepage": "https://github.com/shulaoda/pathslash#readme",
-  "bugs": "https://github.com/shulaoda/pathslash/issues",
   "files": [
     "dist"
   ],
@@ -40,24 +40,22 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "tsdown",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage --coverage.include='src/**' --coverage.reporter=text",
+    "build": "vp pack",
+    "test": "vp test run",
+    "test:watch": "vp test",
+    "test:coverage": "vp test run --coverage --coverage.include='src/**' --coverage.reporter=text",
     "coverage:node": "node scripts/np-coverage.mjs",
-    "lint": "oxlint --deny-warnings",
+    "check": "vp check",
+    "check:fix": "vp check --fix",
     "lint:package": "publint && attw --pack .",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.4",
     "@types/node": "^26.0.1",
-    "@vitest/coverage-v8": "^4.1.9",
-    "oxlint": "^1.72.0",
     "publint": "^0.3.21",
-    "tsdown": "^0.22.3",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vite-plus": "^0.2.1"
   },
   "engines": {
     "node": ">=20"

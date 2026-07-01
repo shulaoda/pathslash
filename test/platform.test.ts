@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 import path, { join, posix, sep, win32 } from "../src/index";
 
 const expected = process.platform === "win32" ? win32 : posix;
